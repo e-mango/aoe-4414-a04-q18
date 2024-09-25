@@ -1,7 +1,7 @@
 # eci_to_ecef.py
 #
 # Usage: python3 eci_to_ecef.py year month day hour minute second eci_x_km eci_y_km eci_z_km
-#  Text explaining script usage
+#  Converts ECI components into the ECEF frame
 # Parameters:
 #  year: year of the time instant
 #  month: month of the time instant
