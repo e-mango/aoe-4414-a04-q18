@@ -21,7 +21,6 @@
 
 import math # math module
 import sys # argv
-import numpy as np
 
 # "constants"
 R_E_KM = 6378.137
@@ -61,9 +60,9 @@ else:
 # write script below this line
 
 #Calculate the Frac. Julian Date
-JD = math.floor(day-32075 + 1461*(year+4800+(month-14)/12)/4 + 367*(month-2-(month-14)/12*12)/12 - 3*((year+4900+(month-14)/12)/100)/4)
+JD = (day - 32075 + int(1461 * (year + 4800 + int((month - 14) / 12)) / 4)+ int(367 * (month - 2 - int((month - 14) / 12) * 12) / 12) - int(3 * int((year + 4900 + int((month - 14) / 12)) / 100) / 4))
 JD_midnight = JD - 0.5
-D_frac = ((second + 60*(minute+60*hour))/86400)
+D_frac = (second + 60 * (minute + 60 * hour)) / 86400
 jd_frac = JD_midnight + D_frac
 
 #Calculate the GMST Angle
@@ -72,14 +71,8 @@ Theta_GMST_sec = 67310.54841 + (876600*60*60 + 8640184.812866)*T_ut1 + 0.093104*
 GMST_rad = (Theta_GMST_sec % 86400) * w 
 
 # Rotate ECI to ECEF
-R_z = np.array([
-    [np.cos(-GMST_rad), -np.sin(-GMST_rad), 0],
-    [np.sin(-GMST_rad), np.cos(-GMST_rad), 0],
-    [0, 0, 1]])
+ECEF_vec = [eci_x_km * math.cos(GMST_rad) + eci_y_km * math.sin(GMST_rad), eci_y_km * math.cos(GMST_rad) - eci_x_km * math.sin(GMST_rad), eci_z_km]
 
-ECI_vec = np.array([eci_x_km, eci_y_km, eci_z_km])
-
-ECEF_vec = np.dot(R_z,ECI_vec)
 
 ecef_x_km = ECEF_vec[0]
 ecef_y_km = ECEF_vec[1]
