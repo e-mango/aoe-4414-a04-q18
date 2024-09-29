@@ -68,7 +68,7 @@ jd_frac = JD_midnight + D_frac
 #Calculate the GMST Angle
 T_ut1 = (jd_frac - 2451545.0)/36525
 Theta_GMST_sec = 67310.54841 + (876600*60*60 + 8640184.812866)*T_ut1 + 0.093104*(T_ut1**2) + (-6.2e-6 * (T_ut1**3))
-GMST_rad = (Theta_GMST_sec % 86400) * w 
+GMST_rad = math.fmod(((math.fmod(Theta_GMST_sec, 86400)) * w + 2*math.pi),  2*math.pi)
 
 # Rotate ECI to ECEF
 ECEF_vec = [eci_x_km * math.cos(GMST_rad) + eci_y_km * math.sin(GMST_rad), eci_y_km * math.cos(GMST_rad) - eci_x_km * math.sin(GMST_rad), eci_z_km]
